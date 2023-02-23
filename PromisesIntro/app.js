@@ -100,20 +100,55 @@
 //     })
 
 
-const body = document.querySelector("body");
+// const body = document.querySelector("body");
 
-const delayColorChange = (color, delay) => {
-  return new Promise((resolve, reject) =>{
-    setTimeout( () => {
-      body.style.backgroundColor = color;
-      resolve();
-    }
-      ,delay)
+// const delayColorChange = (color, delay) => {
+//   return new Promise((resolve, reject) =>{
+//     setTimeout( () => {
+//     body.style.backgroundColor = color;
+//     resolve();
+//    }
+//       ,delay)
+//  })
+// }
+
+
+
+// delayColorChange("black", 2000)
+//   .then(() => delayColorChange("orange", 2000))
+//   .then(() => delayColorChange("pink", 2000))
+//   .then(() => delayColorChange("green", 2000))
+//   .then(() => delayColorChange("purple", 2000))
+
+// async function colorChange(){
+// await delayColorChange("orange", 2000)
+// await delayColorChange("pink", 2000)
+// await delayColorChange("green", 2000)
+// await delayColorChange("purple", 2000)
+// }
+
+// colorChange();
+
+const ul = document.querySelector("#jokes");
+const getDadJoke = async () =>{
+  try {
+    const config=  { headers: {Accept: "application/json"} }
+    const res = await axios.get("https://icanhazdadjoke.com/", config)
+    return res.data.joke;
+  } catch (error) {
+    return "Sorry no jokes! :("
   }
-  )
 }
-delayColorChange("black", 2000)
-  .then(() => delayColorChange("orange", 2000))
-  .then(() => delayColorChange("pink", 2000))
-  .then(() => delayColorChange("green", 2000))
-  .then(() => delayColorChange("purple", 2000))
+
+const addDadJoke = async () =>{
+  const jokeText = await getDadJoke();
+  const newLi = document.createElement('li');
+  newLi.append(jokeText) ;
+  ul.append(newLi);
+}
+
+const button = document.querySelector("button");
+
+button.addEventListener("click", () =>{
+  addDadJoke()
+})
